@@ -22,12 +22,18 @@ def sp(fname):
     return {'sample':s, 'capping':c, 'anneal':a}
 
 # example script
-import os
-os.chdir('Anneal series ZnO Al + cap')
+if __name__ == 'main':
+    import os
+    os.chdir('Anneal series ZnO Al + cap')
 
-import glob
-files = glob.glob('SE/*.SEsnap')
-data = importFiles(files, ms.SEMeasurement, sp)
+    import glob
+    files = glob.glob('Hall/*.xlsx')
+    data = importFiles(files, ms.HallMeasurement, sp)
 
-# pick the relevant stuff
-shdata = data[['sample', 'capping', 'anneal','A2','B2','Thickness # 3']]
+    # pick the relevant stuff
+    shdata = data[['sample', 'capping', 'anneal','Hall mobility']]
+    # make a pivot table
+    mpivot = pd.pivot_table(shdata, values='Hall mobility',
+                        index=['sample','capping'],
+                        columns=['anneal'])
+
